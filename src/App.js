@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import LoginPage from './components/LoginPage';
+import GraphForm from './components/GraphForm';
+import LineBar from './components/LineBar';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<LoginPage/>} />
+          <Route path="/graph-form" element={<GraphForm/>} />
+          <Route path="/line-bar" element={<LineBar/>} />
+          <Route path="/old-route" element={<Navigate to="/new-route" />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
