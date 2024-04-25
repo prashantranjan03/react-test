@@ -9,9 +9,12 @@ function LineBarPage() {
 
   console.log('Received data:', data); 
 
+  const type = data && data.length > 0 ? data[0].type : '';
+  const description = data && data.length > 0 ? data[0].description : '';
+
   return (
     <div>
-      <h2>Line Chart</h2>
+      <h3>{type} - {description}</h3>
       {data && <LineChart inputs={data} />}
     </div>
   );

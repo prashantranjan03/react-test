@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import 'chartjs-adapter-date-fns';
 Chart.register(...registerables);
 
 function LineChart({ inputs }) {
@@ -9,11 +10,12 @@ function LineChart({ inputs }) {
 
     useEffect(() => {
         return () => {
-            if (chartRef.current) {
+            if (chartRef.current && chartRef.current.chartInstance) {
                 chartRef.current.chartInstance.destroy();
             }
         };
-    }, []); 
+    }, [chartRef.current]);
+    
 
     useEffect(() => {
         
@@ -21,12 +23,12 @@ function LineChart({ inputs }) {
     }, [inputs]); 
 
     // Extract prices from each input's prices array
-    const dates = inputs.map(item => item.prices.map(price => price.date)).flat();
+    const years = inputs.flatMap(input => input.prices.map(price => new Date(price.date).getFullYear()));
     const prices = inputs.flatMap(input => input.prices.map(price => price.price));
 
     // Construct chart data and options
     const chartData = {
-        labels: prices, 
+        labels: years, 
         datasets: [
             {
                 label: 'Price',
@@ -41,10 +43,11 @@ function LineChart({ inputs }) {
     const chartOptions = {
         scales: {
             x: {
-                type: 'time',
-                time: {
-                    unit: 'month' 
-                }
+                
+                title: {
+                    display: true,
+                    text: 'Year',
+                },
             },
             y: {
                 title: {
@@ -56,10 +59,11 @@ function LineChart({ inputs }) {
         },
     };
 
-    return (
-        <div>
+    return (<>
+        
+        <div style={{padding:50}}>
             <Line key={chartKey} ref={chartRef} data={chartData} options={chartOptions} />
-        </div>
+        </div></>
     );
 }
 
