@@ -4,7 +4,6 @@ import Chart from 'chart.js/auto';
 const PieChart = ({ selectedData, inputs, clickedMalePercentage }) => {
     const chartRef = useRef(null);
     const chartInstanceRef = useRef(null);
-    console.log('clickedMalePercentage:', clickedMalePercentage);
 
     useEffect(() => {
         // Calculate male and female percentages based on selected data if available
@@ -35,9 +34,8 @@ const PieChart = ({ selectedData, inputs, clickedMalePercentage }) => {
         // Create or update the chart instance
         const ctx = chartRef.current.getContext('2d');
 
-        if (clickedMalePercentage !== null && clickedMalePercentage !== undefined && clickedFemalePercentage!==100) {
-            console.log('clickedMalePercentage:', clickedMalePercentage);
-            console.log('clickedFemalePercentage:', clickedFemalePercentage);
+        if (clickedMalePercentage !== null && clickedMalePercentage.length) {
+            
             if (chartInstanceRef.current) {
                 chartInstanceRef.current.data.labels = ['Male', 'Female'];
                 chartInstanceRef.current.data.datasets[0].data = [clickedMalePercentage, clickedFemalePercentage];
@@ -65,7 +63,7 @@ const PieChart = ({ selectedData, inputs, clickedMalePercentage }) => {
                 chartInstanceRef.current = newChartInstance;
             }
         } else {
-            console.log('clickedMalePercentage is null or undefined');
+            
             if (chartInstanceRef.current) {
                 chartInstanceRef.current.data.labels = ['Male', 'Female'];
                 chartInstanceRef.current.data.datasets[0].data = [malePercentage, femalePercentage];
