@@ -46,16 +46,16 @@ function GraphForm() {
     return (
         <>
             <div style={{ display: 'flex', margin: '10px' }}>
-                <h4>Manage Product Price Trend</h4>
+                <h4>Sales Tracking App</h4>
                 <button type="button" onClick={handleAddChanges} style={{ marginLeft: 'auto', padding: '6px', backgroundColor: '#110251', color: 'white', borderRadius: 4, cursor: 'pointer' }}>Add Changes</button>
             </div>
             <div>
                 {inputs.map((input, index) => (
-                    <div key={index} style={{ marginBottom: '10px' }}>
+                    <div key={index} style={{ padding: '20px' }}>
                         <div style={{ display: 'flex', marginBottom: '30px', padding: 10 }}>
                             <input
                                 type="text"
-                                placeholder="Type (e.g., 'Crude Palm Oil')"
+                                placeholder="Shop Name"
                                 name="type"
                                 value={input.type}
                                 onChange={(event) => handleInputChange(index, event)}
@@ -63,7 +63,7 @@ function GraphForm() {
                             />
                             <input
                                 type="text"
-                                placeholder="Short Description"
+                                placeholder="Shop Type"
                                 name="description"
                                 value={input.description}
                                 onChange={(event) => handleInputChange(index, event)}
@@ -72,14 +72,14 @@ function GraphForm() {
                             {index > 0 && <button type="button" onClick={() => handleRemoveInput(index)}>Remove</button>}
                         </div>
                         {input.prices.map((price, priceIndex) => (
-                            <div key={priceIndex} style={{ display: 'flex', marginBottom: '5px', padding: 10 }}>
+                            <div key={priceIndex} style={{ display: 'flex', padding: 10, marginRight:'20px' }}>
                                 <input
                                     type="number"
-                                    placeholder="Price"
+                                    placeholder="Annual Sales in Rupees"
                                     name="price"
                                     value={price.price}
                                     onChange={(event) => handlePriceChange(index, priceIndex, event)}
-                                    style={{ marginRight: '5px', width: '40%' }}
+                                    style={{ marginRight: '5px', width: '20%' }}
                                 />
                                 <input
                                     type="date"
@@ -87,7 +87,15 @@ function GraphForm() {
                                     name="date"
                                     value={price.date}
                                     onChange={(event) => handlePriceChange(index, priceIndex, event)}
-                                    style={{ marginRight: '5px', width: '40%' }}
+                                    style={{ marginRight: '5px', width: '20%' }}
+                                />
+                                 <input
+                                    type="number"
+                                    placeholder="Percentage of Male Customers"
+                                    name="malePercentage"
+                                    value={price.malePercentage}
+                                    onChange={(event) => handlePriceChange(index, priceIndex, event)}
+                                    style={{ marginRight: '5px', width: '30%' }}
                                 />
                                 {priceIndex === input.prices.length - 1 && <button type="button" onClick={() => handleAddPrice(index)}>Add</button>}
                                 {priceIndex > 0 && <button type="button" onClick={() => handleRemovePrice(index, priceIndex)}>Remove</button>}

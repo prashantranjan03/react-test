@@ -1,41 +1,32 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 Chart.register(...registerables);
 
 function LineChart({ inputs }) {
-    const [chartKey, setChartKey] = useState(0); 
-    const chartRef = useRef(null);
 
-    useEffect(() => {
-        return () => {
-            if (chartRef.current && chartRef.current.chartInstance) {
-                chartRef.current.chartInstance.destroy();
-            }
-        };
-    }, [chartRef.current]);
-    
+    const dataPoints = inputs.flatMap(input => input.prices.map(price => ({
+        year: new Date(price.date).getFullYear(),
+        price: price.price
+    })));
 
-    useEffect(() => {
-        
-        setChartKey(prevKey => prevKey + 1);
-    }, [inputs]); 
+    // Sort dataPoints by year
+    dataPoints.sort((a, b) => a.year - b.year);
 
-    // Extract prices from each input's prices array
-    const years = inputs.flatMap(input => input.prices.map(price => new Date(price.date).getFullYear()));
-    const prices = inputs.flatMap(input => input.prices.map(price => price.price));
-
+    // Extract sorted years and prices
+    const years = dataPoints.map(dataPoint => dataPoint.year);
+    const prices = dataPoints.map(dataPoint => dataPoint.price);
     // Construct chart data and options
     const chartData = {
-        labels: years, 
+        labels: years,
         datasets: [
             {
                 label: 'Price',
-                data: prices, 
+                data: prices,
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1,
+                tension: 0.3,
             },
         ],
     };
@@ -43,7 +34,7 @@ function LineChart({ inputs }) {
     const chartOptions = {
         scales: {
             x: {
-                
+
                 title: {
                     display: true,
                     text: 'Year',
@@ -51,19 +42,20 @@ function LineChart({ inputs }) {
             },
             y: {
                 title: {
+
                     display: true,
                     text: 'Price',
                 },
-                beginAtZero: false,
+                beginAtZero: true,
             },
         },
     };
 
-    return (<>
-        
-        <div style={{padding:50}}>
-            <Line key={chartKey} ref={chartRef} data={chartData} options={chartOptions} />
-        </div></>
+    return (
+        <div>
+            <Line data={chartData} options={chartOptions} />
+        </div>
+
     );
 }
 
