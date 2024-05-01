@@ -68,12 +68,12 @@ const CrossFilter = ({ inputs, onBarClick }) => {
         return () => {
             myChart.destroy();
         };
-    }, []);
+    }, );
 
     // Pass the array of male percentages to the parent component
     useEffect(() => {
         onBarClick(clickedMalePercentages);
-    }, [clickedMalePercentages]);
+    }, [clickedMalePercentages, onBarClick]);
 
     return (
         <div style={{ border: '5px solid #ccc', padding: '20px', marginLeft: '20px', marginRight: '20px', marginBottom: '50px', marginTop: '20px' }}>
